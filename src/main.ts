@@ -57,16 +57,6 @@ resetGame()
 let paused = false
 let didHit = false
 
-const MAXSPD = 10
-function slowBall(body: Body) {
-  let spdsq = body.velocity.x*body.velocity.x + body.velocity.y*body.velocity.y
-  if (spdsq > MAXSPD*MAXSPD) {
-    console.log("bRakE!?")
-    let spd = Math.sqrt(spdsq)
-    Body.setVelocity(body, { x: (body.velocity.x / spd) * MAXSPD, y: (body.velocity.y / spd)*MAXSPD })
-  }
-}
-
 function updateBall(body: Body, left: boolean, right: boolean, delta: number) {
   let xforce = 0
   if (left) {
@@ -76,15 +66,11 @@ function updateBall(body: Body, left: boolean, right: boolean, delta: number) {
     xforce += 1.0;
   }
 
-  // body.force.x = xforce * MFORCE * delta;
   Body.setVelocity(body, { x: xforce * MFORCE * delta, y: body.velocity.y })
 }
 
 function update(delta: number) {
   if (paused) return
-
-  // slowBall(ball)
-  // slowBall(ball2)
 
   updateBall(ball, keys.a, keys.d, delta);
   updateBall(ball2, keys.ArrowLeft, keys.ArrowRight, delta);
@@ -97,7 +83,6 @@ function update(delta: number) {
     didHit = true;
     hit.playbackRate = Math.random()*2.0 + 0.5;
     hit.play()
-    console.log("applying")
     theBall.force.y -= 0.001
     // Body.applyForce(theBall, theBall.position, { x: 0, y: -0.1 })
   } else {
@@ -157,7 +142,9 @@ function render() {
   g.ellipse(ball2.position.x, ball2.position.y, BRAD, BRAD, 0, 0, Math.PI*2);
   g.fill()
 
-  g.fillText(`${score2}`, canvas.width-50, 50)
+  let str = `${score2}`
+  let m = g.measureText(str)
+  g.fillText(str, canvas.width-50-m.width, 50)
 
   g.fillStyle = "white";
   g.beginPath();
