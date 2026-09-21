@@ -28,7 +28,7 @@ const BOPT : IBodyDefinition = { frictionAir: 0, restitution: 0.1, mass: 5 }
 
 const ball = Bodies.circle(BRAD, BRAD, BRAD, BOPT);
 const ball2 = Bodies.circle(canvas.width-BRAD, BRAD, BRAD, BOPT);
-const theBall = Bodies.circle(canvas.width/2, canvas.height/2, TBRAD, { frictionAir: 0.01, restitution: 0.8, mass: 0.1 });
+const theBall = Bodies.circle(canvas.width/2, canvas.height/2, TBRAD, { frictionAir: 0.015, restitution: 0.8, mass: 0.1 });
 let scoreLast = Math.random() < 0.5 ? ball : ball2;
 
 Composite.add(engine.world, [ground, leftWall, rightWall, roof, net, ball, ball2, theBall])
@@ -38,7 +38,7 @@ Runner.run(runner, engine)
 
 const keys : Record<string, boolean> = {}
 
-const MFORCE = 0.5;
+const MFORCE = 0.65;
 
 function resetGame() {
   // Body.setPosition(theBall, { x: canvas.width/2, y: canvas.height/2 })
@@ -83,7 +83,7 @@ function update(delta: number) {
     didHit = true;
     hit.playbackRate = Math.random()*2.0 + 0.5;
     hit.play()
-    theBall.force.y -= 0.001
+    // theBall.force.y -= 0.001
     // Body.applyForce(theBall, theBall.position, { x: 0, y: -0.1 })
   } else {
     didHit = false
@@ -154,7 +154,7 @@ function render() {
   requestAnimationFrame(render);
 }
 
-const JMP = 0.2
+const JMP = 0.25
 function keyDown(event : KeyboardEvent) {
   if (event.key === "w") {
     if (Collision.collides(ball, ground)) {
